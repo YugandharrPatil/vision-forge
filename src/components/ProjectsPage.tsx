@@ -1,0 +1,183 @@
+import { Sidebar } from "./Sidebar";
+import { cn } from "../lib/utils";
+import { useState, useRef, useEffect } from "react";
+import { Link } from "@tanstack/react-router";
+import {
+  Bell,
+  Settings,
+  Plus,
+  Filter,
+  Tag,
+  MoreVertical,
+  FileText,
+  AlertCircle,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  Loader2 as Loader,
+} from "lucide-react";
+
+const sampleImages = [
+  "https://placehold.co/120x120?text=BAR",
+  "https://placehold.co/120x120?text=WIDGET",
+  "https://placehold.co/120x120?text=UNDERCUTS",
+  "https://placehold.co/120x120?text=CLIP",
+];
+
+// Simple dropdown for demo (shadcn style, no extra packages)
+function Dropdown({ items }: { items: string[] }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    function handle(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    if (open) document.addEventListener("mousedown", handle);
+    return () => document.removeEventListener("mousedown", handle);
+  }, [open]);
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-muted/60 transition border border-transparent hover:border-border text-muted-foreground cursor-pointer"
+        onClick={() => setOpen((v) => !v)}
+        aria-label="Open menu"
+        tabIndex={0}
+      >
+        <MoreVertical size={20} />
+      </button>
+      {open && (
+        <div className="absolute right-0 bottom-10 z-30 min-w-[140px] bg-white border border-border rounded-lg shadow-lg py-1 animate-in fade-in zoom-in-95">
+          {items.map((item) => (
+            <button
+              key={item}
+              className="w-full text-left px-4 py-2 text-sm hover:bg-muted/60 transition text-foreground cursor-pointer"
+              onClick={() => setOpen(false)}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function ProjectsPage() {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  return (
+    <div className="flex min-h-screen bg-[oklch(1_0_0)]">
+      <Sidebar collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed((c) => !c)} />
+      <main className={cn(
+        "flex-1 flex flex-col transition-all duration-200",
+        sidebarCollapsed ? "px-2 md:px-4 py-4" : "px-4 md:px-8 py-4 md:py-6"
+      )}>
+        {/* Breadcrumb & Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Link to="/toolpath" className="hover:underline cursor-pointer transition text-muted-foreground">Toolpath</Link>
+            <span className="mx-1">/</span>
+            <span className="font-semibold text-foreground">Projects</span>
+          </div>
+          <div className="flex items-center gap-2 sm:gap-4">
+            <button className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-muted/60 cursor-pointer transition"><Bell size={20} /></button>
+            <button className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-muted/60 cursor-pointer transition"><Settings size={20} /></button>
+            <button className="bg-orange-600 text-white font-semibold px-4 md:px-5 py-2 rounded hover:bg-orange-700 text-sm whitespace-nowrap cursor-pointer transition flex items-center gap-2"><Plus size={18} />New Project</button>
+          </div>
+        </div>
+        {/* Projects Title */}
+        <h1 className="text-2xl font-bold mb-4">Projects</h1>
+        {/* Search & Filter */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-4">
+          <input type="text" placeholder="Search" className="border border-input rounded-md px-3 py-2 w-full sm:w-64 bg-white" />
+          <button className="border border-input rounded-md px-4 py-2 bg-white flex items-center gap-2 text-sm font-medium hover:bg-muted/60 cursor-pointer"><Filter size={18} />Filter</button>
+        </div>
+        {/* Project Cards Grid */}
+        <div className="bg-card rounded-xl border border-border p-3 md:p-6 mb-4 md:mb-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <span>2 of 4 Parts Processed</span>
+            </div>
+            <button className="border border-input rounded-md px-3 py-1 bg-white text-sm font-medium hover:bg-muted/60 cursor-pointer flex items-center gap-2"><Tag size={16} />Manage Tags</button>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {/* Project Card 1 */}
+            <div className="bg-white border border-border rounded-lg p-4 flex flex-col gap-2 relative shadow-sm hover:shadow-md transition group cursor-pointer hover:bg-muted/60">
+              <span className="absolute top-2 left-2 flex items-center gap-1 bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-0.5 rounded"><AlertCircle size={14} className="text-yellow-600" />Issues to consider</span>
+              <img src={sampleImages[0]} alt="Support BAR" className="w-full aspect-square object-cover rounded mb-2 border" />
+              <div className="font-semibold truncate">Support BAR</div>
+              <div className="text-xs text-muted-foreground truncate">AI Address</div>
+              <div className="text-xs text-muted-foreground">Uploaded 3m ago</div>
+              <div className="absolute bottom-2 right-2 z-10">
+                <Dropdown items={["View Details", "Duplicate", "Archive", "Delete"]} />
+              </div>
+            </div>
+            {/* Project Card 2 */}
+            <div className="bg-white border border-border rounded-lg p-4 flex flex-col gap-2 relative shadow-sm hover:shadow-md transition group cursor-pointer hover:bg-muted/60">
+              <span className="absolute top-2 left-2 flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded"><Loader size={14} className="animate-spin text-blue-600" />Processing</span>
+              <img src={sampleImages[1]} alt="STEEL WIDGET" className="w-full aspect-square object-cover rounded mb-2 border" />
+              <div className="font-semibold truncate">STEEL WIDGET</div>
+              <div className="text-xs text-muted-foreground truncate">AI Address</div>
+              <div className="text-xs text-muted-foreground">Uploaded 3m ago</div>
+              <div className="absolute bottom-2 right-2 z-10">
+                <Dropdown items={["View Details", "Duplicate", "Archive", "Delete"]} />
+              </div>
+            </div>
+            {/* Project Card 3 */}
+            <div className="bg-white border border-border rounded-lg p-4 flex flex-col gap-2 relative shadow-sm hover:shadow-md transition group cursor-pointer hover:bg-muted/60">
+              <span className="absolute top-2 left-2 flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded"><Loader size={14} className="animate-spin text-blue-600" />Processing</span>
+              <img src={sampleImages[2]} alt="UNDERCUTS" className="w-full aspect-square object-cover rounded mb-2 border" />
+              <div className="font-semibold truncate">UNDERCUTS</div>
+              <div className="text-xs text-muted-foreground truncate">AI Address</div>
+              <div className="text-xs text-muted-foreground">Uploaded 3m ago</div>
+              <div className="absolute bottom-2 right-2 z-10">
+                <Dropdown items={["View Details", "Duplicate", "Archive", "Delete"]} />
+              </div>
+            </div>
+            {/* Project Card 4 */}
+            <div className="bg-white border border-border rounded-lg p-4 flex flex-col gap-2 relative shadow-sm hover:shadow-md transition group cursor-pointer hover:bg-muted/60">
+              <span className="absolute top-2 left-2 flex items-center gap-1 bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded"><CheckCircle size={14} className="text-green-600" /></span>
+              <img src={sampleImages[3]} alt="Steel Clip" className="w-full aspect-square object-cover rounded mb-2 border" />
+              <div className="font-semibold truncate">Steel Clip</div>
+              <div className="text-xs text-muted-foreground truncate">AI Address</div>
+              <div className="text-xs text-muted-foreground">Uploaded 3m ago</div>
+              <div className="absolute bottom-2 right-2 z-10">
+                <Dropdown items={["View Details", "Duplicate", "Archive", "Delete"]} />
+              </div>
+            </div>
+            {/* Upload More Card */}
+            <div className="border-2 border-dashed border-border rounded-lg flex flex-col items-center justify-center p-4 text-muted-foreground cursor-pointer hover:bg-muted/60 transition min-h-[120px]">
+              <Plus size={24} />
+              <span className="text-xs mt-1">Upload More</span>
+            </div>
+          </div>
+        </div>
+        {/* File List Row */}
+        <div className="bg-card rounded-xl border border-border p-3 md:p-6 mb-4 md:mb-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-2">
+            <span className="text-sm text-muted-foreground">Showing 20 projects per page</span>
+            <div className="flex items-center gap-2">
+              <button className="w-8 h-8 flex items-center justify-center rounded border border-input bg-white hover:bg-muted/60 cursor-pointer"><ChevronLeft size={18} /></button>
+              <button className="w-8 h-8 flex items-center justify-center rounded border border-input bg-white hover:bg-muted/60 cursor-pointer"><ChevronRight size={18} /></button>
+            </div>
+          </div>
+          <div className="flex gap-4 overflow-x-auto pb-2">
+            {['ProE.prt','ParaSolid_x_t','SolidWorks Part.SLDPRT','Catia Part.CATPart','Iges Part.iges','Step file.step'].map((file, i) => (
+              <div key={file} className="flex flex-col items-center min-w-[100px]">
+                <div className={cn("w-12 h-14 border border-border rounded bg-white flex items-center justify-center mb-1 relative", i === 1 ? "" : "")}>{i === 1 && <AlertCircle size={16} className="absolute -top-2 -right-2 text-red-500" />}<FileText size={24} className="text-muted-foreground" /></div>
+                <span className="text-xs text-center text-muted-foreground truncate w-20">{file}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Pagination */}
+        <div className="flex justify-end">
+          <div className="flex items-center gap-2">
+            <button className="w-8 h-8 flex items-center justify-center rounded border border-input bg-white hover:bg-muted/60 cursor-pointer"><ChevronLeft size={18} /></button>
+            <span className="text-sm">1</span>
+            <button className="w-8 h-8 flex items-center justify-center rounded border border-input bg-white hover:bg-muted/60 cursor-pointer"><ChevronRight size={18} /></button>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+} 
