@@ -1,17 +1,16 @@
 import { cn } from "../lib/utils";
-// import { useState } from "react";
+import { useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  CircleDashed,
-  FolderKanban,
+  LayoutGrid,
   Scissors,
-  BookOpen,
+  Book,
   Users,
   HelpCircle,
   ChevronLeft,
   ChevronRight,
-  Zap,
-  User,
+  UserCircle,
+  AlertCircle,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -30,9 +29,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
     >
       {/* Logo */}
       <div className={cn("flex items-center gap-2 mb-8", collapsed ? "justify-center px-0" : "px-2") }>
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center">
-          <CircleDashed size={24} className="text-white" />
-        </div>
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center text-white font-bold text-lg">VF</div>
         {!collapsed && <span className="font-semibold text-lg tracking-tight">Vision Forge</span>}
       </div>
       {/* Navigation */}
@@ -46,7 +43,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                 location.pathname === "/" && !collapsed && "bg-[oklch(0.967_0.001_286.375)] text-[oklch(0.21_0.006_285.885)]"
               )}
             >
-              <FolderKanban size={20} className="text-muted-foreground" />
+              <LayoutGrid size={20} className="text-muted-foreground" />
               {!collapsed && "Projects"}
             </Link>
           </li>
@@ -70,7 +67,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                 location.pathname === "/libraries" && !collapsed && "bg-[oklch(0.967_0.001_286.375)] text-[oklch(0.21_0.006_285.885)]"
               )}
             >
-              <BookOpen size={20} className="text-muted-foreground" />
+              <Book size={20} className="text-muted-foreground" />
               {!collapsed && "Libraries"}
             </Link>
           </li>
@@ -100,7 +97,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             aria-label="Expand sidebar"
             style={{ minHeight: 36 }}
           >
-            <ChevronRight size={20} />
+            <ChevronRight size={20} className="text-muted-foreground" />
           </button>
         ) : (
           <button
@@ -108,7 +105,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             onClick={onToggle}
             aria-label="Collapse sidebar"
           >
-            <ChevronLeft size={20} />
+            <ChevronLeft size={20} className="text-muted-foreground" />
             {!collapsed && "Collapse"}
           </button>
         )}
@@ -117,16 +114,14 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       {!collapsed && (
         <div className="mt-6 mb-4">
           <div className="bg-orange-100 border border-orange-300 rounded-lg p-4 flex flex-col items-center">
-            <span className="text-xs font-medium text-orange-700 mb-2">14 days left in trial</span>
-            <button className="bg-orange-600 text-white text-xs font-semibold px-4 py-1 rounded hover:bg-orange-700 cursor-pointer flex items-center gap-2"><Zap size={16} />UPGRADE NOW</button>
+            <span className="text-xs font-medium text-orange-700 mb-2 flex items-center gap-1"><AlertCircle size={16} className="text-orange-600" />14 days left in trial</span>
+            <button className="bg-orange-600 text-white text-xs font-semibold px-4 py-1 rounded hover:bg-orange-700 cursor-pointer">UPGRADE NOW</button>
           </div>
         </div>
       )}
       {/* User Info */}
       <div className={cn("flex items-center gap-2 mt-auto", collapsed ? "justify-center" : "") }>
-        <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-[oklch(0.21_0.006_285.885)] font-bold">
-          <User size={20} />
-        </div>
+        <UserCircle size={28} className="text-muted-foreground bg-gray-200 rounded-full" />
         {!collapsed && <span className="font-medium">Vision Forge</span>}
       </div>
       {/* Footer */}

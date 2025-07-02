@@ -1,20 +1,22 @@
 import { defineConfig } from 'vite'
 import viteReact from '@vitejs/plugin-react'
-// import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from '@tailwindcss/vite'
+
+import { resolve } from 'node:path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
     port: 3000,
   },
-  plugins: [viteReact()],
+  plugins: [viteReact(), tailwindcss()],
   test: {
     globals: true,
     environment: 'jsdom',
   },
   resolve: {
     alias: {
-      '@': new URL('./src', import.meta.url).pathname,
+      '@': resolve(__dirname, './src'),
     },
   },
 })
