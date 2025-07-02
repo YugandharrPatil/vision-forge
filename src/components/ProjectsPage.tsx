@@ -88,16 +88,16 @@ export default function ProjectsPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {/* Project Card 1 */}
-            <div className="bg-white border border-border rounded-lg p-4 flex flex-col gap-2 relative shadow-sm hover:shadow-md transition group cursor-pointer hover:bg-muted/60">
+            <Link to="/putter" className="bg-white border border-border rounded-lg p-4 flex flex-col gap-2 relative shadow-sm hover:shadow-md transition group cursor-pointer hover:bg-muted/60 focus:outline-none focus:ring-2 focus:ring-ring" tabIndex={0}>
               <span className="absolute top-2 left-2 bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-0.5 rounded">Issues to consider</span>
-              <img src={sampleImages[0]} alt="Support BAR" className="w-full aspect-square object-cover rounded mb-2 border" />
-              <div className="font-semibold truncate">Support BAR</div>
+              <img src={sampleImages[0]} alt="Putter" className="w-full aspect-square object-cover rounded mb-2 border" />
+              <div className="font-semibold truncate">Putter</div>
               <div className="text-xs text-muted-foreground truncate">AI Address</div>
               <div className="text-xs text-muted-foreground">Uploaded 3m ago</div>
               <div className="absolute bottom-2 right-2 z-10">
                 <Dropdown items={["View Details", "Duplicate", "Archive", "Delete"]} />
               </div>
-            </div>
+            </Link>
             {/* Project Card 2 */}
             <div className="bg-white border border-border rounded-lg p-4 flex flex-col gap-2 relative shadow-sm hover:shadow-md transition group cursor-pointer hover:bg-muted/60">
               <span className="absolute top-2 left-2 bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">Processing</span>

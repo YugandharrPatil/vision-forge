@@ -17,6 +17,7 @@ import CutConfigsPage from './components/CutConfigsPage'
 import LibrariesPage from './components/LibrariesPage'
 import TeamPage from './components/TeamPage'
 import ToolpathPage from './components/ToolpathPage'
+import PutterPage from './components/PutterPage'
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -57,12 +58,19 @@ const toolpathRoute = createRoute({
   component: ToolpathPage,
 })
 
+const putterRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/putter',
+  component: PutterPage,
+})
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   cutConfigsRoute,
   librariesRoute,
   teamRoute,
   toolpathRoute,
+  putterRoute,
 ])
 
 const router = createRouter({
